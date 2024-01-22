@@ -46,7 +46,7 @@
         return this.value
       }
 
-      function writeSignal(node, value,) {console.log('xxx')
+      function writeSignal(node, value,) {
         node.value = value
         if (node.observers && node.observers.length) {
           for (let i = 0; i < node.observers.length; i += 1) {
