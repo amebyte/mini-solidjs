@@ -2,12 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>mini-Solid</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="app"></div>
     <script>
       const UNOWNED = {
         owned: null,
@@ -18,6 +17,10 @@
       let runEffects = runQueue;
       let Owner = null
       let Listener = null
+      let Updates = null
+      let Effects = null
+      let ExecCount = 0;
+
       function createSignal(value) {
         const s = {
           value,
@@ -58,9 +61,14 @@
         updateComputation(c)
       }
 
+      function createRenderEffect(fn) {
+        const c = createComputation(fn);
+        updateComputation(c);
+      }
+
       function createComputation(fn) {
         const c = {
-            fn,
+          fn,
         };
         return c
       }
@@ -85,7 +93,7 @@
         }
       }
 
-      export function render(code, element, init, options = {}) {
+      function render(code, element, init, options = {}) {
         let disposer;
         createRoot(dispose => {
             disposer = dispose;
@@ -109,6 +117,21 @@
         const fn = isCE ? () => untrack(() => document.importNode(node || (node = create()), true)) : () => (node || (node = create())).cloneNode(true)
         fn.cloneNode = fn
         return fn
+      }
+
+      function insert(parent, accessor, marker, initial) {
+        if (marker !== undefined && !initial) initial = [];
+        if (typeof accessor !== "function") return insertExpression(parent, accessor, initial, marker);
+        createRenderEffect((current) => insertExpression(parent, accessor(), current, marker), initial);
+      }
+
+      function insertExpression(parent, value, current, marker) {
+        const t = typeof value
+        if (t === 'string' || t === 'number') {
+            parent.textContent = value;
+        } else if (value.nodeType) {
+            parent.appendChild(value)
+        }
       }
 
       function createRoot(fn, detachedOwner) {
@@ -160,7 +183,7 @@
             if (!wait)
             Effects = null;
             Updates = null;
-            // handleError(err);
+            console.error(err)
         }
       }
 
@@ -199,13 +222,28 @@
 
       }
 
-      const [count, setCount] = createSignal(1)
-      createEffect(() => {
-        console.log('count 值的变化：', count())
-      })
-      setInterval(() => {
-        setCount(count() + 1)
-      }, 3000)
+      const _tmpl$ = template(`<button type=button>`)
+
+      function Counter() {
+        const [count, setCount] = createSignal(1);
+        const increment = () => setCount(count() + 1);
+        return (() => {
+            const _el$ = _tmpl$();
+            _el$.$$click = increment;
+            insert(_el$, count);
+            return _el$;
+        })();
+      }
+
+      render(() => createComponent(Counter, {}), document.getElementById("app"))
+
+    //   const [count, setCount] = createSignal(1)
+    //   createEffect(() => {
+    //     console.log('count 值的变化：', count())
+    //   })
+    //   setInterval(() => {
+    //     setCount(count() + 1)
+    //   }, 3000)
     </script>
   </body>
 </html>
