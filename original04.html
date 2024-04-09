@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mini-Solid2</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      let Listener
+      function createSignal(value) {
+        const s = {
+          value,
+          observers: null,
+        };
+
+        const setter = (value) => {
+          return writeSignal(s, value)
+        };
+
+        return [readSignal.bind(s), setter]
+      }
+      
+      function readSignal() {
+        if (Listener) {
+          if (!this.observers) {
+            this.observers = [Listener]
+          } else {
+            this.observers.push(Listener)
+          }
+        }
+        return this.value
+      }
+
+      function writeSignal(node, value,) {
+        node.value = value
+        if (node.observers && node.observers.length) {
+            for (let i = 0; i < node.observers.length; i += 1) {
+              const o = node.observers[i]
+              o.fn()
+            }
+        }
+        return value
+      }
+
+      function createEffect(fn) {
+        Listener = { fn }
+        fn()
+        Listener = null
+      }
+
+      // 挂载方法
+      function render(component, parent) {
+        parent.appendChild(component)
+      }
+
+
+      // 创建一个组件
+      const App = () => {
+        const [count, setCount] = createSignal(0)
+        // 创建一个元素
+        const el = document.createElement('div')
+        // 绑定一个点击事件进行更新
+        el.addEventListener('click', () => {
+          setCount(520)
+        })
+        // 设置元素内容
+        el.textContent = count()
+        return el
+      }
+
+      const root = document.getElementById('app')
+      // 将组件进行挂载
+      render(App(), root)
+
+    </script>
+  </body>
+</html>
