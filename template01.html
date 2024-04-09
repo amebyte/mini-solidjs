@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mini-Solid2</title>
+  </head>
+  <body>
+    <div id="app"><div id="left">
+        <dl>
+          <dt>类别</dt>
+          <dd>学生</dd>
+        </dl>
+      </div><div id="right">
+        <dl>
+          <dt>类别</dt>
+          <dd>老师</dd>
+        </dl>
+      </div>
+    </div>
+    <script>
+      const appEl = document.getElementById('app')
+      const appEl2 = document.querySelector('#app')
+      // console.log('app', appEl, appEl2)
+      console.dir(appEl)
+      console.log(appEl.firstChild.nextSibling)
+    </script>
+  </body>
+</html>
