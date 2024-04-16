@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+<script>
+  let start
+  const root = document.getElementById('app')
+  // const ul = document.createElement('ul')
+
+  // function watchRender() {
+  //   const li1 = document.createElement('li')
+  //   li1.textContent = 3333
+  //   ul.appendChild(li1)
+  //   // const width1 = li1.clientWidth
+  //   // console.log('width1', width1)
+  //   const li2 = document.createElement('li')
+  //   li2.textContent = 5555
+  //   ul.appendChild(li2)
+  //   // const width2 = li2.clientWidth
+  //   // console.log('width2', width2)
+  //   const li3 = document.createElement('li')
+  //   li3.textContent = 6666
+  //   ul.appendChild(li3)
+  //   // const width3 = li3.clientWidth
+  //   // console.log('width3', width3)
+  // }
+
+  // setTimeout(watchRender)
+  // root.appendChild(ul)
+
+
+  function template(html) {
+    const create = () => {
+    const t = document.createElement("template")
+    t.innerHTML = html
+      return t.content.firstChild.cloneNode(true)
+    }
+    return create
+  } 
+  const tempUl = template('<ul>')
+  const tempLi = template('<li>')
+  const ul = tempUl()
+  setTimeout(() => {
+    const fragment = document.createDocumentFragment()
+    const li1 = tempLi()
+    console.log('li1', li1)
+    li1.textContent = 2222
+    fragment.appendChild(li1)
+    const width1 = li1.clientWidth
+    console.log('width1', width1)
+
+    const li2 = tempLi()
+    li2.textContent = 3333
+    fragment.appendChild(li2)
+    const width2 = li2.clientWidth
+    console.log('width2', width2)
+
+    const li3 = tempLi()
+    li3.textContent = 5555
+    fragment.appendChild(li3)
+    const width3 = li3.clientWidth
+    console.log('width3', width3)
+    ul.appendChild(fragment)
+  })
+  root.appendChild(ul)
+
+
+  // setTimeout(() => {
+  //   for(let i = 0; i < 2; i++) {
+  //     const li = document.createElement('li')
+  //     li.textContent = i
+  //     ul.appendChild(li)
+  //   }
+  // })
+  // requestAnimationFrame(() => {
+  //    start = performance.now();
+  //   const executionTime = end - start;
+  //   console.log(`代码执行时间为：${executionTime} 毫秒`);
+  //   requestAnimationFrame(() => {
+  //     const end = performance.now();
+  //     const executionTime = end - start;
+  //     console.log(`代码执行时间为3：${executionTime} 毫秒`);
+  //   })
+  // })
+  // requestAnimationFrame(() => {
+  //   const end = performance.now();
+  //   const executionTime = end - start;
+  //   console.log(`代码执行时间为2：${executionTime} 毫秒`);
+  // })
+  // setTimeout(() => {
+  //   console.log('settimeout')
+  // })
+  // Promise.resolve().then(() => {
+  //   console.log('pppp')
+  // })
+    // const total = 100000
+    // let ul = document.getElementById('container')
+    // let once = 20
+    // let page = total / once
+
+    // function loop(curTotal) {
+    //     if (curTotal <= 0) return 
+
+    //     let pageCount = Math.min(curTotal, once) // 最后一次渲染一定少于20条，因此取最小
+
+    //     setTimeout(() => {
+    //         for (let i = 0; i < pageCount; i++) {
+    //             let li = document.createElement('li')
+    //             li.innerHTML = i
+    //             ul.appendChild(li)
+    //         }
+    //         loop(curTotal - pageCount)
+    //     }, 0)
+    // }
+
+    // loop(total)
+</script>
+
+  </body>
+</html>
