@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+<script>
+  const root = document.getElementById('app')
+  const ul = document.createElement('ul')
+
+  function watchRender() {
+    const fragment = document.createDocumentFragment()
+    const li1 = document.createElement('li')
+    li1.textContent = 'Cobyte'
+    fragment.appendChild(li1) 
+    const width1 = li1.clientWidth // 会引起回流吗？
+    console.log(width1)
+
+    const li2 = document.createElement('li')
+    li2.textContent = 'Coboy'
+    fragment.appendChild(li2) 
+    const width2 = li2.clientWidth // 会引起回流吗？
+    console.log(width2)
+    
+    const li3 = document.createElement('li')
+    li3.textContent = '掘金签约作者'
+    fragment.appendChild(li3) 
+    const width3 = li3.clientWidth // 会引起回流吗？
+    console.log(width3)
+    ul.appendChild(fragment)
+  }
+
+  setTimeout(watchRender)
+  root.appendChild(ul)
+</script>
+
+  </body>
+</html>
