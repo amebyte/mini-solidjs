@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+<script>
+  const root = document.getElementById('app')
+  const ul = document.createElement('ul')
+
+  function watchRender() {
+    const li1 = document.createElement('li')
+    li1.textContent = 'Cobyte'
+    ul.appendChild(li1) // 引起回流？
+
+    const li2 = document.createElement('li')
+    li2.textContent = 'Coboy'
+    ul.appendChild(li2) // 引起回流？
+
+    const li3 = document.createElement('li')
+    li3.textContent = '掘金签约作者'
+    ul.appendChild(li3) // 引起回流？
+  }
+
+  setTimeout(watchRender)
+  root.appendChild(ul)
+</script>
+
+  </body>
+</html>
